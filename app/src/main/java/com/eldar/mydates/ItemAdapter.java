@@ -10,7 +10,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 /**
- * Created by eldar on 10/7/14.
+ * Provide data to the list UI element items.
  */
 public class ItemAdapter extends BaseAdapter {
     private static final String LOG_TAG = ItemAdapter.class.getCanonicalName();
