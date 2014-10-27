@@ -5,9 +5,18 @@
     android:layout_height="match_parent">
 
     <TextView
+        android:id="@+id/textLabel"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="@string/SampleText"
-        android:id="@+id/textView" />
+        android:textStyle="bold"
+        android:textSize="36sp" />
+
+    <TextView
+        android:id="@+id/textValue"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/SampleText"
+        android:textAlignment="center"
+        android:textSize="28sp" />
 </LinearLayout>
