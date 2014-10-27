@@ -1,6 +1,7 @@
 package com.eldar.mydates;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
@@ -11,11 +12,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 
+import java.util.Timer;
+import java.util.TimerTask;
+
 /**
  * Created by eldar on 10/7/14.
  */
 public class DatesList extends ActionBarActivity {
     private static final String LOG_TAG = DatesList.class.getCanonicalName();
+    private Timer timer;
+    private final Handler timeHandler = new Handler();
     private ItemAdapter itemAdapter;
 
     //Fragment that displays the meme.
@@ -38,6 +44,29 @@ public class DatesList extends ActionBarActivity {
         ListView listView = (ListView) findViewById(R.id.listView);
         itemAdapter = new ItemAdapter(this);
         listView.setAdapter(itemAdapter);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        timer = new Timer();
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                timeHandler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        itemAdapter.notifyDataSetChanged();
+                    }
+                });
+            }
+        }, 500, 1000);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        timer.cancel();
     }
 
     @Override

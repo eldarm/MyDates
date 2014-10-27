@@ -88,6 +88,7 @@ class SpecialDate {
     }
 
     private long anniversaryShiftSec() {
+        now = new GregorianCalendar();
         return (anniversary.getTime().getTime() - now.getTime().getTime()) / 1000;
     }
 } // class SpecialDate
