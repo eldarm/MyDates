@@ -1,15 +1,27 @@
 package com.eldar.mydates;
 
+import android.util.Log;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.Vector;
 
 /**
+ * SpecialDate class handles the data for a special date to remember:
+ * the actual date and why is it so special.
  * Created by eldar on 10/9/14.
  */
 class SpecialDate {
+    private static final String LOG_TAG = SpecialDate.class.getCanonicalName();
+
     private final long secInMin = 60;
     private final long minInHour = 60;
     private final long hoursInDay = 24;
@@ -37,6 +49,40 @@ class SpecialDate {
         cal.setTime(date);
         now = new GregorianCalendar();
         computeAnniversary();
+    }
+
+    public static Vector<SpecialDate> readDatesList(InputStream is) {
+        BufferedReader reader = new BufferedReader(new InputStreamReader(is));
+        Vector<SpecialDate> dates = new Vector<SpecialDate>();
+        String line;
+        try {
+            while ((line = reader.readLine()) != null) {
+                String[] parts = line.split(":", 2);
+                if (parts.length != 2) {
+                    Log.e(LOG_TAG, "Incorrect string format: '" + line + "'");
+                    continue;  // Wrong format.
+                }
+                dates.add(new SpecialDate(parts[0], parts[1]));
+            }
+        } catch (IOException e) {
+            Log.e(LOG_TAG, "Error reading the dates", e);
+        }
+        return dates;
+    }
+
+    public static void writeDatesList(OutputStream os, Vector<SpecialDate> dates) {
+        StringBuffer result = new StringBuffer();
+        for (SpecialDate date : dates) {
+            result.append(date.getLabel());
+            result.append(":");
+            result.append(date.toString());
+            result.append("\n");
+        }
+        try {
+            os.write(result.toString().getBytes());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     protected void computeAnniversary() {

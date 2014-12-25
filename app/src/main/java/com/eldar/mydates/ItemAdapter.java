@@ -1,5 +1,11 @@
 package com.eldar.mydates;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+
 import android.content.Context;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -16,6 +22,7 @@ import java.util.Vector;
  */
 public class ItemAdapter extends BaseAdapter {
     private static final String LOG_TAG = ItemAdapter.class.getCanonicalName();
+    private static final String dataFileName = "data_my_dates.txt";
     private final Context context;
     private final LayoutInflater layoutInflater;
 
@@ -25,11 +32,35 @@ public class ItemAdapter extends BaseAdapter {
         context = c;
         layoutInflater = LayoutInflater.from(context);
         dates = new Vector<SpecialDate>();
-        // Fixed list for now, we will learn to load and save it later.
-        // Feel free to put your own dates here.
-        dates.add(new SpecialDate("G", "2010/09/27 09:00:00"));
-        dates.add(new SpecialDate("Z", "2012/10/01 10:00:00"));
-        dates.add(new SpecialDate("M", "2000/04/28 08:00:00"));
+        loadDates();
+    }
+
+    public void setDates(Vector<SpecialDate> dates) {
+        if (dates != null) {
+            this.dates = dates;
+            notifyDataSetChanged();
+        }
+    }
+
+    public void saveDates() {
+        try {
+            FileOutputStream outputStream =
+                    context.openFileOutput(dataFileName, Context.MODE_PRIVATE);
+            SpecialDate.writeDatesList(outputStream, dates);
+            outputStream.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void loadDates() {
+        try {
+            FileInputStream is = context.openFileInput(dataFileName);
+            setDates(SpecialDate.readDatesList(is));
+            is.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override

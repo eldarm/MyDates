@@ -11,7 +11,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+import android.widget.Toast;
 
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -83,6 +87,15 @@ public class DatesList extends ActionBarActivity {
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
         if (id == R.id.action_settings) {
+            return true;
+        }
+        if (id == R.id.action_add_date) {
+            Toast.makeText(this, "Adding a date...", Toast.LENGTH_LONG).show();
+            final String hardcodedValue = "G:2010/09/27 09:00:00\nZ:2012/10/01 10:00:00\n";
+            InputStream stream =
+                    new ByteArrayInputStream(hardcodedValue.getBytes(StandardCharsets.UTF_8));
+            itemAdapter.setDates(SpecialDate.readDatesList(stream));
+            itemAdapter.saveDates();
             return true;
         }
         return super.onOptionsItemSelected(item);
