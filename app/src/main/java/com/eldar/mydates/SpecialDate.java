@@ -118,7 +118,6 @@ class SpecialDate {
 
     public String timeTillAnniversary() {
         long shift = anniversaryShiftSec();
-        // System.out.println("Shift: " + shift);
         if (shift < 0) {
             shift = secInYear + shift; // Actually, minus, since it's < 0.
         }

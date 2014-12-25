@@ -14,14 +14,14 @@ import android.widget.TimePicker;
 public class EnterDate extends ActionBarActivity {
     private DatePicker datePicker;
     private TimePicker timePicker;
-    private TextView textView;
+    private TextView textLabel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_enter_date);
 
-        textView = (TextView)findViewById(R.id.dateString);
+        textLabel = (TextView)findViewById(R.id.textLabel);
         datePicker = (DatePicker)findViewById(R.id.datePicker);
         timePicker = (TimePicker)findViewById(R.id.timePicker);
 
@@ -29,14 +29,15 @@ public class EnterDate extends ActionBarActivity {
         button.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 // Perform action on click
-                textView.setText(
-                        String.format("%04d-%02d-%02dT%02d:%02d",
-                                //DateFormat.getDateTimeInstance().format(datePicker.getCalendarView().getDate()),
-                                // Supported only from API 12, we need at least 9.
-                                datePicker.getYear(), datePicker.getMonth(), datePicker.getDayOfMonth(),
-                                timePicker.getCurrentHour(), timePicker.getCurrentMinute()
-                        )
-                );
+                String dateString =
+                        String.format("%04d/%02d/%02d %02d:%02d:00",
+                                datePicker.getYear(), datePicker.getMonth() + 1,
+                                datePicker.getDayOfMonth(), timePicker.getCurrentHour(),
+                                timePicker.getCurrentMinute());
+                SpecialDate date = new SpecialDate(textLabel.getText().toString(), dateString);
+                ItemAdapter adapter = new ItemAdapter(EnterDate.this);
+                adapter.addDate(date);
+                finish();
             }
         });
     }

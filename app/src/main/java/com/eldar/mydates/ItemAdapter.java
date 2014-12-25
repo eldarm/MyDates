@@ -32,7 +32,6 @@ public class ItemAdapter extends BaseAdapter {
         context = c;
         layoutInflater = LayoutInflater.from(context);
         dates = new Vector<SpecialDate>();
-        loadDates();
     }
 
     public void setDates(Vector<SpecialDate> dates) {
@@ -63,6 +62,12 @@ public class ItemAdapter extends BaseAdapter {
         }
     }
 
+    public void addDate(SpecialDate date) {
+        loadDates();
+        dates.add(date);
+        saveDates();
+    }
+
     @Override
     public int getCount() {
         return dates.size();
@@ -80,7 +85,7 @@ public class ItemAdapter extends BaseAdapter {
 
     @Override
     public View getView(int i, View view, ViewGroup parent) {
-        Log.d(LOG_TAG, String.format("getView() for item %d", i));
+        //Log.d(LOG_TAG, String.format("getView() for item %d", i));
         LinearLayout itemView;
         if (view == null) { // Create a new view if no recycled view is available
             itemView = (LinearLayout) layoutInflater.inflate(
@@ -91,7 +96,6 @@ public class ItemAdapter extends BaseAdapter {
         TextView textView = (TextView)itemView.findViewById(R.id.textLabel);
         textView.setText(dates.elementAt(i).getLabel() + ": " + dates.elementAt(i).toString());
         textView = (TextView)itemView.findViewById(R.id.textValue);
-        // textView.setText(String.format(parent.getResources().getString(R.string.ItemSampleText), i));
         textView.setText(dates.elementAt(i).timeSince());
 
         return itemView;

@@ -1,5 +1,6 @@
 package com.eldar.mydates;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
@@ -53,6 +54,7 @@ public class DatesList extends ActionBarActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        itemAdapter.loadDates();
         timer = new Timer();
         timer.schedule(new TimerTask() {
             @Override
@@ -91,11 +93,8 @@ public class DatesList extends ActionBarActivity {
         }
         if (id == R.id.action_add_date) {
             Toast.makeText(this, "Adding a date...", Toast.LENGTH_LONG).show();
-            final String hardcodedValue = "G:2010/09/27 09:00:00\nZ:2012/10/01 10:00:00\n";
-            InputStream stream =
-                    new ByteArrayInputStream(hardcodedValue.getBytes(StandardCharsets.UTF_8));
-            itemAdapter.setDates(SpecialDate.readDatesList(stream));
-            itemAdapter.saveDates();
+            Intent intent = new Intent(DatesList.this, EnterDate.class);
+            startActivity(intent);
             return true;
         }
         return super.onOptionsItemSelected(item);
