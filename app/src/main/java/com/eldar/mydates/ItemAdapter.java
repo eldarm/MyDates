@@ -6,7 +6,9 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -96,18 +98,37 @@ public class ItemAdapter extends BaseAdapter {
             itemView = (LinearLayout) view;
         }
         TextView textView = (TextView)itemView.findViewById(R.id.textLabel);
-        textView.setText(dates.elementAt(i).getLabel() + ": " + dates.elementAt(i).toString());
+        textView.setText(dates.elementAt(i).getLabel());
+
+        textView = (TextView)itemView.findViewById(R.id.textDate);
+        textView.setText(dates.elementAt(i).toString());
+
         textView = (TextView)itemView.findViewById(R.id.textValue);
         textView.setText(dates.elementAt(i).timeSince());
+
         itemView.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
                 switch (motionEvent.getAction()) {
                     case MotionEvent.ACTION_DOWN:  // Touch.
                         TextView textView = (TextView)view.findViewById(R.id.textLabel);
-                        Toast.makeText(context, "Touched the view..." + textView.getText(),
-                                       Toast.LENGTH_LONG)
-                             .show();
+                        new AlertDialog.Builder(context)
+                                .setTitle("Deleting the date?")
+                                .setMessage("'Yes' to delete " + textView.getText())
+                                .setPositiveButton("Yes",new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog,int id) {
+                                        Toast.makeText(context, "Deleting", Toast.LENGTH_LONG)
+                                                .show();
+                                    }
+                                })
+                                .setNegativeButton("No",new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog,int id) {
+                                        Toast.makeText(context, "Not deleting", Toast.LENGTH_LONG)
+                                             .show();
+                                    }
+                                })
+                                .create()
+                                .show();
                         break;
 
                     case MotionEvent.ACTION_MOVE:  // Move, un-touch: nothing to do.
