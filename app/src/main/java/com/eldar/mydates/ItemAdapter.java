@@ -9,11 +9,13 @@ import java.io.IOException;
 import android.content.Context;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.Vector;
 
@@ -97,6 +99,24 @@ public class ItemAdapter extends BaseAdapter {
         textView.setText(dates.elementAt(i).getLabel() + ": " + dates.elementAt(i).toString());
         textView = (TextView)itemView.findViewById(R.id.textValue);
         textView.setText(dates.elementAt(i).timeSince());
+        itemView.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                switch (motionEvent.getAction()) {
+                    case MotionEvent.ACTION_DOWN:  // Touch.
+                        TextView textView = (TextView)view.findViewById(R.id.textLabel);
+                        Toast.makeText(context, "Touched the view..." + textView.getText(),
+                                       Toast.LENGTH_LONG)
+                             .show();
+                        break;
+
+                    case MotionEvent.ACTION_MOVE:  // Move, un-touch: nothing to do.
+                    case MotionEvent.ACTION_UP:
+                        break;
+                }
+                return false;
+            }
+        });
 
         return itemView;
     }
