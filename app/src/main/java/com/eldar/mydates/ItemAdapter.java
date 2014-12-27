@@ -67,9 +67,31 @@ public class ItemAdapter extends BaseAdapter {
     }
 
     public void addDate(SpecialDate date) {
-        loadDates();
         dates.add(date);
-        saveDates();
+    }
+
+    public void deleteDate(String label) {
+        Vector<SpecialDate> newDates = new Vector<SpecialDate>();
+        for (SpecialDate date : dates) {
+            if (!label.equals(date.getLabel())) {
+                newDates.add(date);
+            }
+        }
+        setDates(newDates);  // Don't just assign! setDates also notifies UI.
+    }
+
+    class ItemDeleter implements DialogInterface.OnClickListener {
+        private String label;
+
+        public ItemDeleter(String label) {
+            this.label = label;
+        }
+
+        public void onClick(DialogInterface dialog,int id) {
+            Toast.makeText(context, "Deleting " + label, Toast.LENGTH_LONG).show();
+            deleteDate(label);
+            saveDates();
+        }
     }
 
     @Override
@@ -115,12 +137,8 @@ public class ItemAdapter extends BaseAdapter {
                         new AlertDialog.Builder(context)
                                 .setTitle("Deleting the date?")
                                 .setMessage("'Yes' to delete " + textView.getText())
-                                .setPositiveButton("Yes",new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialog,int id) {
-                                        Toast.makeText(context, "Deleting", Toast.LENGTH_LONG)
-                                                .show();
-                                    }
-                                })
+                                .setPositiveButton("Yes",
+                                        new ItemDeleter(textView.getText().toString()))
                                 .setNegativeButton("No",new DialogInterface.OnClickListener() {
                                     public void onClick(DialogInterface dialog,int id) {
                                         Toast.makeText(context, "Not deleting", Toast.LENGTH_LONG)
