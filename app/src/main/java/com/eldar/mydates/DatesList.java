@@ -11,7 +11,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ListView;
+import android.widget.GridView;
 import android.widget.Toast;
 
 import java.io.ByteArrayInputStream;
@@ -46,9 +46,9 @@ public class DatesList extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dates_list);
 
-        ListView listView = (ListView) findViewById(R.id.listView);
+        GridView gridView = (GridView) findViewById(R.id.listView);
         itemAdapter = new ItemAdapter(this);
-        listView.setAdapter(itemAdapter);
+        gridView.setAdapter(itemAdapter);
     }
 
     @Override

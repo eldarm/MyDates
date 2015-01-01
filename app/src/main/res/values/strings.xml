@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">My Dates</string>
+    <string name="app_name">My Special Dates</string>
     <string name="action_settings">Settings</string>
-    <string name="header_string">Hello, world!</string>
+   <!--  <string name="header_string">Hello, world!</string> -->
     <string name="DoStuffButton">Use this Date and Time</string>
-    <string name="SampleText">Sample Text for %d.</string>
+    <string name="SampleText">...</string>
     <string name="add_date_menu">Add a date</string>
 
 </resources>
