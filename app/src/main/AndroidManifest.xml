@@ -10,7 +10,7 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@drawable/mydates_launcher"
+        android:icon="@drawable/baloons_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity

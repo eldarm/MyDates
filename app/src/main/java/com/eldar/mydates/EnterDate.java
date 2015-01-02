@@ -9,6 +9,7 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.TextView;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
 
 public class EnterDate extends ActionBarActivity {
@@ -58,7 +59,12 @@ public class EnterDate extends ActionBarActivity {
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-        if (id == R.id.action_settings) {
+        if (id == R.id.action_help) {
+            Toast.makeText(this,
+                    "Enter label, date and click the button to add the date, "
+                            + "back button to return without adding a date.",
+                    Toast.LENGTH_LONG)
+                    .show();
             return true;
         }
         return super.onOptionsItemSelected(item);

@@ -88,7 +88,10 @@ public class DatesList extends ActionBarActivity {
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-        if (id == R.id.action_settings) {
+        if (id == R.id.action_help) {
+            Toast.makeText(this, "Use Add a Date to add dates, click on a date to delete.",
+                    Toast.LENGTH_LONG)
+                    .show();
             return true;
         }
         if (id == R.id.action_add_date) {
