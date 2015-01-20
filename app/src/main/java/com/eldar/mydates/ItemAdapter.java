@@ -1,15 +1,11 @@
 package com.eldar.mydates;
 
-import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.IOException;
 
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -31,11 +27,20 @@ public class ItemAdapter extends BaseAdapter {
     private final LayoutInflater layoutInflater;
 
     private Vector<SpecialDate> dates;
+    private boolean showAnniversary = false;
 
     public ItemAdapter(Context c) {
         context = c;
         layoutInflater = LayoutInflater.from(context);
         dates = new Vector<SpecialDate>();
+    }
+
+    public void setShowAnniversary(boolean value) {
+        showAnniversary = value;
+    }
+
+    public boolean getShowAnniversary() {
+        return showAnniversary;
     }
 
     public void setDates(Vector<SpecialDate> dates) {
@@ -125,8 +130,9 @@ public class ItemAdapter extends BaseAdapter {
         textView = (TextView)itemView.findViewById(R.id.textDate);
         textView.setText(dates.elementAt(i).toString());
 
-        textView = (TextView)itemView.findViewById(R.id.textValue);
-        textView.setText(dates.elementAt(i).timeSince());
+        textView = (TextView) itemView.findViewById(R.id.textValue);
+        textView.setText(showAnniversary ? dates.elementAt(i).timeTillAnniversary()
+                                        : dates.elementAt(i).timeSince());
 
         itemView.setOnTouchListener(new View.OnTouchListener() {
             @Override

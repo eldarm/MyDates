@@ -8,5 +8,9 @@
     <string name="DoStuffButton">Use this Date and Time</string>
     <string name="SampleText">...</string>
     <string name="add_date_menu">Add a date</string>
+    <string name="setting_show">show</string>
+    <string name="question_since">Switch to showing time since?</string>
+    <string name="question_till">Switch to showing till anniversary?</string>
+    <string name="menu_flip_view">Flip view</string>
 
 </resources>

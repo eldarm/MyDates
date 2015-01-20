@@ -117,11 +117,13 @@ class SpecialDate {
     }
 
     public String timeTillAnniversary() {
+        long years = now.get(Calendar.YEAR) - cal.get(Calendar.YEAR);
         long shift = anniversaryShiftSec();
         if (shift < 0) {
             shift = secInYear + shift; // Actually, minus, since it's < 0.
+            years++;
         }
-        return formatShift(shift);
+        return String.format("%d YEARS in: ", years) + formatShift(shift);
     }
 
     private String formatShift(long shift) {

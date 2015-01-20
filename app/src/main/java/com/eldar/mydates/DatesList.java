@@ -1,11 +1,14 @@
 package com.eldar.mydates;
 
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBarActivity;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -14,9 +17,6 @@ import android.view.ViewGroup;
 import android.widget.GridView;
 import android.widget.Toast;
 
-import java.io.ByteArrayInputStream;
-import java.io.InputStream;
-import java.nio.charset.StandardCharsets;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -25,6 +25,9 @@ import java.util.TimerTask;
  */
 public class DatesList extends ActionBarActivity {
     private static final String LOG_TAG = DatesList.class.getCanonicalName();
+    private static final String SHOW_ANNIVERSARY = "anniversary";
+    private static final String SHOW_TIME_TILL = "time_till";
+    private final Context me = this;
     private Timer timer;
     private final Handler timeHandler = new Handler();
     private ItemAdapter itemAdapter;
@@ -54,6 +57,11 @@ public class DatesList extends ActionBarActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        SharedPreferences sharedPref = getPreferences(Context.MODE_PRIVATE);
+        String defaultShow = sharedPref.getString(getString(R.string.setting_show), SHOW_TIME_TILL);
+        if (defaultShow.equals(SHOW_ANNIVERSARY)) {
+            itemAdapter.setShowAnniversary(true);
+        }
         itemAdapter.loadDates();
         timer = new Timer();
         timer.schedule(new TimerTask() {
@@ -88,6 +96,28 @@ public class DatesList extends ActionBarActivity {
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
+        if (id == R.id.action_show) {
+            new AlertDialog.Builder(this)
+                    .setTitle("Switch view?")
+                    .setMessage(itemAdapter.getShowAnniversary()
+                            ? me.getResources().getString(R.string.question_since)
+                            : me.getResources().getString(R.string.question_till))
+                    .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            Toast.makeText(me, "Switching", Toast.LENGTH_LONG).show();
+                            itemAdapter.setShowAnniversary(!itemAdapter.getShowAnniversary());
+                        }
+                    })
+                    .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            Toast.makeText(me, "Not switching", Toast.LENGTH_LONG).show();
+                        }
+                    })
+                    .create()
+                    .show();
+
+            return true;
+        }
         if (id == R.id.action_help) {
             Toast.makeText(this, "Use Add a Date to add dates, click on a date to delete.",
                     Toast.LENGTH_LONG)
