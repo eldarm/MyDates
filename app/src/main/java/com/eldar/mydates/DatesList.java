@@ -27,7 +27,6 @@ public class DatesList extends ActionBarActivity {
     private static final String LOG_TAG = DatesList.class.getCanonicalName();
     private static final String SHOW_ANNIVERSARY = "anniversary";
     private static final String SHOW_TIME_TILL = "time_till";
-    private final Context me = this;
     private Timer timer;
     private final Handler timeHandler = new Handler();
     private ItemAdapter itemAdapter;
@@ -97,25 +96,16 @@ public class DatesList extends ActionBarActivity {
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
         if (id == R.id.action_show) {
-            new AlertDialog.Builder(this)
-                    .setTitle("Switch view?")
-                    .setMessage(itemAdapter.getShowAnniversary()
-                            ? me.getResources().getString(R.string.question_since)
-                            : me.getResources().getString(R.string.question_till))
-                    .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int id) {
-                            Toast.makeText(me, "Switching", Toast.LENGTH_LONG).show();
-                            itemAdapter.setShowAnniversary(!itemAdapter.getShowAnniversary());
-                        }
-                    })
-                    .setNegativeButton("No", new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int id) {
-                            Toast.makeText(me, "Not switching", Toast.LENGTH_LONG).show();
-                        }
-                    })
-                    .create()
-                    .show();
+            // Switch view:
+            boolean showAnniversary = !itemAdapter.getShowAnniversary();
+            itemAdapter.setShowAnniversary(showAnniversary);
 
+            // And don't forget to save the preferences:
+            SharedPreferences sharedPref = getPreferences(Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor = sharedPref.edit();
+            editor.putString(getString(R.string.setting_show),
+                    showAnniversary ? SHOW_ANNIVERSARY : SHOW_TIME_TILL);
+            editor.commit();
             return true;
         }
         if (id == R.id.action_help) {
